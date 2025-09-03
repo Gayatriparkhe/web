@@ -1,0 +1,1518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FX STREET CODE - Algorithmic Trading Software</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        html {
+    scroll-behavior: smooth;
+    }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        } 
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .gradient-bg {
+        background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
+        background: radial-gradient(ellipse at center, rgba(102, 126, 234, 0.15) 0%, transparent 70%);
+        }
+
+        .card-hover {
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .card-hover:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(102, 126, 234, 0.3);
+            border-color: rgba(102, 126, 234, 0.5);
+        }
+
+        .fade-in {
+            animation: fadeIn 1s ease-in;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .floating-animation {
+            animation: floating 3s ease-in-out infinite;
+        }
+        
+        @keyframes floating {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+        
+        .pulse-glow {
+            animation: pulseGlow 2s infinite;
+        }
+        
+        @keyframes pulseGlow {
+            0%, 100% { box-shadow: 0 0 20px rgba(102, 126, 234, 0.5); }
+            50% { box-shadow: 0 0 30px rgba(102, 126, 234, 0.8); }
+        }
+
+        .navbar {
+            background: rgba(15, 15, 35, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .hero-bg {
+            background: radial-gradient(ellipse at center, rgba(102, 126, 234, 0.15) 0%, transparent 70%);
+        }
+
+        .pricing-card {
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.02) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .pricing-card:hover {
+            transform: scale(1.05);
+            border-color: rgba(102, 126, 234, 0.8);
+            box-shadow: 0 30px 60px rgba(102, 126, 234, 0.4);
+        }
+
+        .floating-shapes {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 0;
+        }
+
+        .shape {
+            position: absolute;
+            opacity: 0.1;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .shape:nth-child(1) {
+            top: 20%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .shape:nth-child(2) {
+            top: 60%;
+            right: 10%;
+            animation-delay: 2s;
+        }
+
+        .shape:nth-child(3) {
+            bottom: 20%;
+            left: 20%;
+            animation-delay: 4s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+        }
+
+        .popup-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(5px);
+            z-index: 1000;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .popup-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: linear-gradient(145deg, rgba(26, 26, 46, 0.95) 0%, rgba(22, 33, 62, 0.95) 100%);
+            padding: 2rem;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(20px);
+            width: 90%;
+            max-width: 500px;
+            animation: slideUp 0.4s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from { 
+                opacity: 0;
+                transform: translate(-50%, -30%);
+            }
+            to { 
+                opacity: 1;
+                transform: translate(-50%, -50%);
+            }
+        }
+
+        .whatsapp-float {
+            position: fixed;
+            width: 60px;
+            height: 60px;
+            bottom: 20px;
+            right: 20px;
+            background-color: #25d366;
+            color: #FFF;
+            border-radius: 50px;
+            text-align: center;
+            font-size: 30px;
+            box-shadow: 2px 2px 3px #999;
+            z-index: 100;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        
+
+        .notification-popup {
+            position: fixed;
+            bottom: 120px;
+            right: 40px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 20px;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            z-index: 99;
+            animation: slideInRight 0.5s ease;
+            max-width: 300px;
+            display: none;
+        }
+
+        @keyframes slideInRight {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            transition: all 0.3s ease;
+            border: none;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        .service-icon {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .mobile-menu {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .desktop-menu {
+                display: none;
+            }
+            .mobile-menu {
+                display: block;
+            }
+        }
+
+        .stats-counter {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: #667eea;
+        }
+
+        .testimonial-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 2rem;
+            margin: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        @keyframes blink-caret {
+            from, to { border-color: transparent; }
+            50% { border-color: #667eea; }
+        }
+        .typing-effect {
+            border-right: 2px solid #667eea;
+            animation: typing 3s steps(40, end), blink-caret 0.75s step-end infinite;
+        }
+        
+        @keyframes typing {
+            from { width: 0; }
+            to { width: 100%; }
+        }
+        
+    
+    
+        
+        
+        .glow-effect {
+            box-shadow: 0 0 20px rgba(102, 126, 234, 0.3);
+        }
+        
+        
+        .fade-in {
+            animation: fadeIn 1s ease-in;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .floating-animation {
+            animation: floating 3s ease-in-out infinite;
+        }
+        
+        @keyframes floating {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+        
+        .pulse-glow {
+            animation: pulseGlow 2s infinite;
+        }
+        
+        @keyframes pulseGlow {
+            0%, 100% { box-shadow: 0 0 20px rgba(102, 126, 234, 0.5); }
+            50% { box-shadow: 0 0 30px rgba(102, 126, 234, 0.8); }
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+        
+        .modal.show {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        
+        .typing-effect {
+            border-right: 2px solid #667eea;
+            animation: typing 3s steps(40, end), blink-caret 0.75s step-end infinite;
+        }
+        
+        @keyframes typing {
+            from { width: 0; }
+            to { width: 100%; }
+        }
+        
+        @keyframes blink-caret {
+            from, to { border-color: transparent; }
+            50% { border-color: #667eea; }
+        }
+
+    </style>
+</head>
+<body class="bg-gray-900 text-white">
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 bg-gray-900 bg-opacity-95 backdrop-blur-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center py-4">
+                <div class="flex items-center">
+                    <!-- Right side logo -->
+                    <div style="margin-left: auto;">
+                    <img src="photo.jpeg" alt="Logo" style="height: 90px; cursor: pointer;">
+                    </div>
+                    <div class="text-2xl font-bold gradient-text"><!--FX STREET CODE--></div>
+                </div>
+                <div class="hidden md:flex space-x-8">
+                    <a href="#home" class="hover:text-blue-400 transition">Home</a>
+                    <a href="#about-us" class="hover:text-blue-400 transition">About Us</a>
+                    <a href="#services" class="hover:text-blue-400 transition">Services</a>
+                    <a href="#how-it-works" class="hover:text-blue-400 transition">How It Works</a>
+                    <a href="#pricing" class="hover:text-blue-400 transition">Pricing</a>
+                    <a href="#results" class="hover:text-blue-400 transition">Results</a>
+                    <a href="#contact" class="hover:text-blue-400 transition">Contact</a>
+                </div>
+                <div class="flex space-x-4">
+                    <button onclick="openEnquiryModal()" class="bg-gradient-to-r from-blue-600 to-purple-600 px-4 py-2 rounded-lg hover:shadow-lg transition">Start Demo</button>
+                    <button onclick="openWhatsApp()" class="bg-green-600 px-4 py-2 rounded-lg hover:shadow-lg transition">WhatsApp</button>
+                </div>
+                <div class="md:hidden">
+                    <button onclick="toggleMenu()" class="text-white">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div id="mobile-menu" class="hidden md:hidden bg-gray-800 px-4 py-2">
+            <a href="#home" class="block py-2 hover:text-blue-400">Home</a>
+            <a href="#about-us" class="block py-2 hover:text-blue-400">About Us</a>
+            <a href="#services" class="block py-2 hover:text-blue-400">Services</a>
+            <a href="#how-it-works" class="block py-2 hover:text-blue-400">How It Works</a>
+            <a href="#pricing" class="block py-2 hover:text-blue-400">Pricing</a>
+            <a href="#results" class="block py-2 hover:text-blue-400">Results</a>
+            <a href="#contact" class="block py-2 hover:text-blue-400">Contact</a>
+        </div>
+    </nav>
+
+    <!-- Floating Shapes--> 
+    <div class="floating-shapes">
+        <div class="shape w-20 h-20 bg-blue-500 rounded-full"></div>
+        <div class="shape w-16 h-16 bg-purple-500 rounded-full"></div>
+        <div class="shape w-12 h-12 bg-pink-500 rounded-full"></div>
+    </div>
+
+    <!-- Hero Section -->
+    <section id="home" class="min-h-screen flex items-center gradient-bg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <div class="fade-in">
+                    <h1 class="text-5xl md:text-6xl font-bold mb-6 text-white">
+                    <span class="text-white"> <br>Automated Trading.</span>
+                    <span class="gradient-text">Real Time Control.</span>
+                    </h1>
+                    <p class="text-xl mb-8 text-gray-200">
+                        Empowering traders with reliable, broker-agnostic algorithmic solutions that maximize profits, minimize risks, and bring transparency to every trade.
+                    </p>
+                    <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
+                        <button onclick="openEnquiryModal()" class="bg-gradient-to-r from-purple-600 to-pink-600 px-8 py-4 rounded-lg font-semibold hover:shadow-xl transition">
+                            Start Free Demo
+                        </button>
+                    
+                        <!--<button onclick="openCalendly()" class="bg-gradient-to-r from-purple-600 to-pink-600 px-8 py-4 rounded-lg font-semibold hover:shadow-xl transition">
+                            Book a Call
+                        </button>-->
+                    </div>
+                    <div class="mt-12">
+                        <p class="text-sm text-gray-300 mb-4">Works with all major brokers:</p>
+                        <div class="flex space-x-8 text-gray-400">
+                            <span>MetaTrader 4/5</span>
+                            <span>cTrader</span>
+                            <span>TradingView</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="floating-animation">
+                    <div class="bg-gray-800 rounded-2xl p-8 shadow-2xl">
+                        <div class="text-center mb-6">
+                            <h3 class="text-2xl font-bold mb-2">Live Trading Dashboard</h3>
+                            <p class="text-gray-400">Real-time performance tracking</p>
+                        </div>
+                        <div class="space-y-4">
+                            <div class="flex justify-between">
+                                <span>Today's Profit:</span>
+                                <span class="text-green-400 font-bold">+$2,450</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span>Active Trades:</span>
+                                <span class="text-blue-400 font-bold">7</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span>Win Rate:</span>
+                                <span class="text-green-400 font-bold">87%</span>
+                            </div>
+                            <div class="w-full bg-gray-700 rounded-full h-2">
+                                <div class="bg-gradient-to-r from-green-400 to-blue-500 h-2 rounded-full" style="width: 87%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Floating Shapes--> 
+    <div class="floating-shapes">
+        <div class="shape w-20 h-20 bg-blue-500 rounded-full"></div>
+        <div class="shape w-16 h-16 bg-purple-500 rounded-full"></div>
+        <div class="shape w-12 h-12 bg-pink-500 rounded-full"></div>
+    </div>
+
+    <!-- About Us --> 
+    <section id="about-us" class="min-h-screen flex items-center gradient-bg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <div class="fade-in">
+                    
+                    
+                    </div>
+                </div>
+                
+                    <div class="bg-transparent-800 rounded-2xl p-8 shadow-2xl">
+                        <div class="text-center mb-6">
+                            <section id="about-us" class="hero-bg min-h-screen flex items-center justify-center relative pt-10">
+        <div class="container mx-auto px-4 text-center">
+            <div class="max-w-4xl mx-auto">
+                <div class="fade-in"></div>
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 fade-in">
+                <h1 class="text-2xl md:text-4xl font-bold mb-6 leading-tight">
+                    <span class="gradient-text">About FX Street Code </span><br>
+                </h1>
+                    <p class="text-xl mb-8 text-gray-200">
+                        <p align="left">
+                            <div class="grid-container">
+                <p></p><span class="gradient-text">FX STREET CODE </span> is a leading provider of advanced algorithmic trading software, delivering reliable and efficient solutions for traders across all major brokers.<br><br>
+                Our platform is designed to empower traders with:<br></p>
+                <p class="centered"></p>
+                Automated Trading Execution<br>
+                Real-Time Profit Monitoring<br>
+                Intelligent Risk Management<br>
+                Comprehensive Technical Support<br><br>
+                </p>
+                <p>We are committed to providing transparent, accurate, and innovative trading solutions that help our clients achieve consistent growth in the financial markets.<br><br>
+                With tailored subscription options – Basic ($200 / 3 months), Premium ($500 / 1 Half year), and High Premium ($2000 5 years) – we ensure flexibility and value for every trading need.<br><br>
+                At <span class="gradient-text">FX STREET CODE </span>, our vision is to make algo trading accessible, reliable, and result-driven for traders worldwide.<br>
+                        </p></p>
+            </p>
+            </div>
+            </div>
+            </div>
+        </div>
+                </div>                               
+            </div>
+        </div>
+    </section>
+                        
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="py-20 bg-gray-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 fade-in">
+                <h2 class="text-4xl md:text-5xl font-bold mb-6">Our Services</h2>
+                <p class="text-xl text-gray-400 max-w-3xl mx-auto">
+                    Comprehensive algorithmic trading solutions designed to maximize your trading potential
+                </p>
+            </div>
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="bg-gray-800 p-8 rounded-2xl card-hover">
+                    <div class="text-4xl mb-4 gradient-text">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4">Algo Trading Software</h3>
+                    <p class="text-gray-400">Fully automated trading on your account without emotions. Advanced algorithms execute trades 24/7 based on market analysis.</p>
+                </div>
+                <div class="bg-gray-800 p-8 rounded-2xl card-hover">
+                    <div class="text-4xl mb-4 gradient-text">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4">Account Management</h3>
+                    <p class="text-gray-400">Strategy setup, risk control, and continuous monitoring. Professional management of your trading parameters and risk settings.</p>
+                </div>
+                <div class="bg-gray-800 p-8 rounded-2xl card-hover">
+                    <div class="text-4xl mb-4 gradient-text">
+                        <i class="fas fa-bell"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4">Live Profit Updates</h3>
+                    <p class="text-gray-400">Daily trade reports and performance tracking. Real-time notifications of your portfolio performance via WhatsApp.</p>
+                </div>
+                <div class="bg-gray-800 p-8 rounded-2xl card-hover">
+                    <div class="text-4xl mb-4 gradient-text">
+                        <i class="fas fa-headset"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4">Technical Support</h3>
+                    <p class="text-gray-400">WhatsApp & call assistance for smooth operation. 24/7 support team ready to help with any technical issues.</p>
+                </div>
+                <div class="bg-gray-800 p-8 rounded-2xl card-hover">
+                    <div class="text-4xl mb-4 gradient-text">
+                        <i class="fas fa-globe"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4">Broker Compatibility</h3>
+                    <p class="text-gray-400">Works with all major forex brokers worldwide. No restrictions on broker choice, complete freedom for traders.</p>
+                </div>
+                <div class="bg-gray-800 p-8 rounded-2xl card-hover">
+                    <div class="text-4xl mb-4 gradient-text">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4">Risk Management</h3>
+                    <p class="text-gray-400">Advanced risk controls and drawdown protection. Smart position sizing and automated stop-loss management.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works -->
+    <section id="how-it-works" class="py-20 bg-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 fade-in">
+                <h2 class="text-4xl md:text-5xl font-bold mb-6">How It Works</h2>
+                <p class="text-xl text-gray-400 max-w-3xl mx-auto">
+                    Simple 3-step process to start automated trading
+                </p>
+            </div>
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="text-center fade-in">
+                    <div class="bg-gradient-to-r from-blue-600 to-purple-600 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6 text-2xl font-bold">
+                        1
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4">Connect Account</h3>
+                    <p class="text-gray-400">Link your broker account securely. We support MT4, MT5, cTrader, and more. Your funds remain in your account.</p>
+                </div>
+                <div class="text-center fade-in">
+                    <div class="bg-gradient-to-r from-purple-600 to-pink-600 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6 text-2xl font-bold">
+                        2
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4">Pick Strategy & Risk</h3>
+                    <p class="text-gray-400">Choose your preferred trading strategy and set risk parameters. Customize lot sizes, drawdown limits, and profit targets.</p>
+                </div>
+                <div class="text-center fade-in">
+                    <div class="bg-gradient-to-r from-pink-600 to-red-600 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6 text-2xl font-bold">
+                        3
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4">Monitor & Withdraw</h3>
+                    <p class="text-gray-400">Watch your account grow with real-time updates. Withdraw profits anytime directly from your broker account.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section id="pricing" class="py-20 relative">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl font-bold mb-4">
+                    <span class="gradient-text">Choose Your Plan</span>
+                </h2>
+                <p class="text-xl text-gray-300 max-w-2xl mx-auto">
+                    Select the perfect plan that matches your trading goals and budget
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-7xl mx-auto">
+                <!-- Basic Plan -->
+                <div class="pricing-card rounded-3xl p-8 relative">
+                    <div class="text-center mb-8">
+                        <div class="inline-flex items-center justify-center w-16 h-16 bg-blue-500 rounded-full mb-4">
+                            <i class="fas fa-box text-2xl text-white"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-white mb-2">BASIC PLAN</h3>
+                        <div class="text-4xl font-bold gradient-text mb-2">$200</div>
+                        <p class="text-gray-400">3 Months</p>
+                    </div>
+
+                    <div class="space-y-3 mb-8">
+                        <div class="flex items-center space-x-3">
+                            <i class="fas fa-bullseye text-green-400"></i>
+                            <span>Accuracy: 75% – 85%</span>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <i class="fas fa-chart-bar text-green-400"></i>
+                            <span>Daily Profit Target: 5% – 10%</span>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <i class="fas fa-coins text-green-400"></i>
+                            <span>Trading Pair: XAU/USD (Gold) only</span>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <i class="fas fa-exchange-alt text-green-400"></i>
+                            <span>Daily Trades: 4 – 5</span>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <i class="fas fa-clock text-green-400"></i>
+                            <span>Validity: 2 Months</span>
+                        </div>
+                    </div>
+
+                    <div class="space-y-2 mb-8 text-sm">
+                        <p class="flex items-center"><i class="fas fa-check text-green-400 mr-2"></i>Low Capital Friendly</p>
+                        <p class="flex items-center"><i class="fas fa-check text-green-400 mr-2"></i>Consistent Returns</p>
+                        <p class="flex items-center"><i class="fas fa-check text-green-400 mr-2"></i>No Emotional Trading</p>
+                        <p class="flex items-center"><i class="fas fa-check text-green-400 mr-2"></i>Live Profit Updates</p>
+                        <p class="flex items-center"><i class="fas fa-check text-green-400 mr-2"></i>Technical Support</p>
+                        <p class="flex items-center"><i class="fas fa-check text-green-400 mr-2"></i>Focus on Gold Market</p>
+                    </div>
+
+                    <button onclick="selectPlan('basic')" class="w-full btn-primary py-3 rounded-full font-semibold">
+                        Choose Basic Plan
+                    </button>
+                </div>
+
+                <!-- Premium Plan -->
+                <div class="pricing-card rounded-3xl p-8 relative border-2 border-purple-500 transform scale-105">
+                    <div class="absolute -top-4 left-1/2 transform -translate-x-1/2">
+                        <span class="bg-gradient-to-r from-purple-500 to-pink-500 text-white px-4 py-1 rounded-full text-sm font-semibold">MOST POPULAR</span>
+                    </div>
+                    
+                    <div class="text-center mb-8">
+                        <div class="inline-flex items-center justify-center w-16 h-16 bg-purple-500 rounded-full mb-4">
+                            <i class="fas fa-gem text-2xl text-white"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-white mb-2">PREMIUM PLAN</h3>
+                        <div class="text-4xl font-bold gradient-text mb-2">$500</div>
+                        <p class="text-gray-400">1 Half Year</p>
+                    </div>
+
+                    <div class="space-y-3 mb-8">
+                        <div class="flex items-center space-x-3">
+                            <i class="fas fa-bullseye text-green-400"></i>
+                            <span>Accuracy: 80% – 90%</span>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <i class="fas fa-chart-bar text-green-400"></i>
+                            <span>Daily Profit Target: 7% – 15%</span>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <i class="fas fa-coins text-green-400"></i>
+                            <span>XAU/USD + Major Forex Pairs</span>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <i class="fas fa-exchange-alt text-green-400"></i>
+                            <span>Daily Trades: 5 – 8</span>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <i class="fas fa-clock text-green-400"></i>
+                            <span>Validity: 12 Months</span>
+                        </div>
+                    </div>
+
+                    <div class="space-y-2 mb-8 text-sm">
+                        <p class="flex items-center"><i class="fas fa-check text-green-400 mr-2"></i>More Trading Opportunities</p>
+                        <p class="flex items-center"><i class="fas fa-check text-green-400 mr-2"></i>High Accuracy</p>
+                        <p class="flex items-center"><i class="fas fa-check text-green-400 mr-2"></i>Priority Support</p>
+                        <p class="flex items-center"><i class="fas fa-check text-green-400 mr-2"></i>Live Profit Dashboard</p>
+                        <p class="flex items-center"><i class="fas fa-check text-green-400 mr-2"></i>Monthly Performance Review</p>
+                        <p class="flex items-center"><i class="fas fa-check text-green-400 mr-2"></i>Flexible Risk Control</p>
+                    </div>
+
+                    <button onclick="selectPlan('premium')" class="w-full btn-primary py-3 rounded-full font-semibold">
+                        Choose Premium Plan
+                    </button>
+                </div>
+
+                <!-- High Premium Plan -->
+                <div class="pricing-card rounded-3xl p-8 relative">
+                    <div class="text-center mb-8">
+                        <div class="inline-flex items-center justify-center w-16 h-16 bg-yellow-500 rounded-full mb-4">
+                            <i class="fas fa-crown text-2xl text-white"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-white mb-2">HIGH PREMIUM</h3>
+                        <div class="text-4xl font-bold gradient-text mb-2">$2000</div>
+                        <p class="text-gray-400">5 Years</p>
+                    </div>
+
+                    <div class="space-y-3 mb-8">
+                        <div class="flex items-center space-x-3">
+                            <i class="fas fa-bullseye text-green-400"></i>
+                            <span>Accuracy: 85% – 95%</span>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <i class="fas fa-chart-bar text-green-400"></i>
+                            <span>Daily Profit Target: 10% – 20%</span>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <i class="fas fa-coins text-green-400"></i>
+                            <span>Forex + Gold + Crypto</span>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <i class="fas fa-exchange-alt text-green-400"></i>
+                            <span>Daily Trades: 8 – 12</span>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <i class="fas fa-infinity text-green-400"></i>
+                            <span>Lifetime Access</span>
+                        </div>
+                    </div>
+
+                    <div class="space-y-2 mb-8 text-sm">
+                        <p class="flex items-center"><i class="fas fa-check text-green-400 mr-2"></i>Lifetime Access</p>
+                        <p class="flex items-center"><i class="fas fa-check text-green-400 mr-2"></i>All Strategies Unlocked</p>
+                        <p class="flex items-center"><i class="fas fa-check text-green-400 mr-2"></i>Dedicated Account Manager</p>
+                        <p class="flex items-center"><i class="fas fa-check text-green-400 mr-2"></i>Highest Accuracy</p>
+                        <p class="flex items-center"><i class="fas fa-check text-green-400 mr-2"></i>VIP Priority Support 24/7</p>
+                        <p class="flex items-center"><i class="fas fa-check text-green-400 mr-2"></i>Early Access to New Features</p>
+                    </div>
+
+                    <button onclick="selectPlan('high-premium')" class="w-full btn-primary py-3 rounded-full font-semibold">
+                        Choose High Premium
+                    </button>
+                </div>
+            </div>
+            <div class="text-center mt-12">
+                <p class="text-sm text-gray-400">
+                    Payment options: UPI, Razorpay, Stripe, PayPal | 
+                    <span class="text-red-400">Risk Warning:</span> Trading involves risk. Past performance does not guarantee future results.
+                </p>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- Results Section -->
+    <section id="results" class="py-20 bg-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 fade-in">
+                <h2 class="text-4xl md:text-5xl font-bold mb-6">Results & Case Studies</h2>
+                <p class="text-xl text-gray-400 max-w-3xl mx-auto">
+                    Real results from our algorithmic trading software
+                </p>
+                <div class="bg-red-900 border border-red-600 p-4 rounded-lg mt-8 max-w-2xl mx-auto">
+                    <p class="text-red-200 text-sm">
+                        <strong>Risk Disclaimer:</strong> Results vary and are not guaranteed. Trading involves substantial risk. These are examples for educational purposes only.
+                    </p>
+                </div>
+            </div>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+                <div class="bg-gray-900 p-6 rounded-2xl card-hover">
+                    <div class="text-center mb-4">
+                        <h3 class="text-xl font-bold">Gold Trading Strategy</h3>
+                        <p class="text-gray-400">Jan 2024 - Mar 2024</p>
+                    </div>
+                    <div class="space-y-3">
+                        <div class="flex justify-between">
+                            <span>Initial Capital:</span>
+                            <span class="font-bold">$5,000</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>Final Balance:</span>
+                            <span class="text-green-400 font-bold">$12,500</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>Net Profit:</span>
+                            <span class="text-green-400 font-bold">+150%</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>Max Drawdown:</span>
+                            <span class="text-red-400">-8%</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-gray-900 p-6 rounded-2xl card-hover">
+                    <div class="text-center mb-4">
+                        <h3 class="text-xl font-bold">Forex Multi-Pair</h3>
+                        <p class="text-gray-400">Feb 2024 - Apr 2024</p>
+                    </div>
+                    <div class="space-y-3">
+                        <div class="flex justify-between">
+                            <span>Initial Capital:</span>
+                            <span class="font-bold">$10,000</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>Final Balance:</span>
+                            <span class="text-green-400 font-bold">$18,500</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>Net Profit:</span>
+                            <span class="text-green-400 font-bold">+85%</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>Max Drawdown:</span>
+                            <span class="text-red-400">-12%</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-gray-900 p-6 rounded-2xl card-hover">
+                    <div class="text-center mb-4">
+                        <h3 class="text-xl font-bold">Conservative Strategy</h3>
+                        <p class="text-gray-400">Mar 2024 - May 2024</p>
+                    </div>
+                    <div class="space-y-3">
+                        <div class="flex justify-between">
+                            <span>Initial Capital:</span>
+                            <span class="font-bold">$25,000</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>Final Balance:</span>
+                            <span class="text-green-400 font-bold">$32,750</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>Net Profit:</span>
+                            <span class="text-green-400 font-bold">+31%</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>Max Drawdown:</span>
+                            <span class="text-red-400">-5%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bg-gray-900 p-8 rounded-2xl">
+                <h3 class="text-2xl font-bold mb-6 text-center">Performance Chart</h3>
+                <div style="height: 400px;">
+                    <canvas id="performanceChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section id="faq" class="py-20 bg-gray-900">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 fade-in">
+                <h2 class="text-4xl md:text-5xl font-bold mb-6">Frequently Asked Questions</h2>
+                <p class="text-xl text-gray-400">
+                    Everything you need to know about our trading software
+                </p>
+            </div>
+            <div class="space-y-6">
+                <div class="bg-gray-800 p-6 rounded-2xl">
+                    <button onclick="toggleFaq(1)" class="w-full text-left flex justify-between items-center">
+                        <h3 class="text-xl font-semibold">Is this SEBI-registered advisory?</h3>
+                        <i class="fas fa-chevron-down transform transition-transform" id="faq-icon-1"></i>
+                    </button>
+                    <div id="faq-content-1" class="hidden mt-4 text-gray-400">
+                        <p>We provide trading software and educational tools, not investment advice. Our algorithms are designed to execute trades based on technical analysis. Always consult with a registered financial advisor for investment decisions.</p>
+                    </div>
+                </div>
+                
+                
+
+                <div class="bg-gray-800 p-6 rounded-2xl">
+                    <button onclick="toggleFaq(2)" class="w-full text-left flex justify-between items-center">
+                        <h3 class="text-xl font-semibold">What brokers are supported?</h3>
+                        <i class="fas fa-chevron-down transform transition-transform" id="faq-icon-2"></i>
+                    </button>
+                    <div id="faq-content-2" class="hidden mt-4 text-gray-400">
+                        <p>Our software works with all major forex brokers including MetaTrader 4/5, cTrader, and other popular platforms. We support over 100+ brokers worldwide.</p>
+                    </div>
+                </div>
+                
+                <div class="bg-gray-800 p-6 rounded-2xl">
+                    <button onclick="toggleFaq(3)" class="w-full text-left flex justify-between items-center">
+                        <h3 class="text-xl font-semibold">What returns can I expect?</h3>
+                        <i class="fas fa-chevron-down transform transition-transform" id="faq-icon-3"></i>
+                    </button>
+                    <div id="faq-content-3" class="hidden mt-4 text-gray-400">
+                        <p>Returns vary based on market conditions, strategy selection, and risk settings. While our algorithms target 5-20% daily profits, there are no guarantees. All trading involves risk of loss.</p>
+                    </div>
+                </div>
+                
+                <div class="bg-gray-800 p-6 rounded-2xl">
+                    <button onclick="toggleFaq(4)" class="w-full text-left flex justify-between items-center">
+                        <h3 class="text-xl font-semibold">Is my capital safe?</h3>
+                        <i class="fas fa-chevron-down transform transition-transform" id="faq-icon-4"></i>
+                    </button>
+                    <div id="faq-content-4" class="hidden mt-4 text-gray-400">
+                        <p>We don't hold your funds. All trades execute on your broker account. You maintain full control of your capital and can withdraw anytime from your broker.</p>
+                    </div>
+                </div>
+                
+                <div class="bg-gray-800 p-6 rounded-2xl">
+                    <button onclick="toggleFaq(5)" class="w-full text-left flex justify-between items-center">
+                        <h3 class="text-xl font-semibold">What support do you provide?</h3>
+                        <i class="fas fa-chevron-down transform transition-transform" id="faq-icon-5"></i>
+                    </button>
+                    <div id="faq-content-5" class="hidden mt-4 text-gray-400">
+                        <p>We provide 24/7 WhatsApp support, setup assistance, strategy optimization, and regular performance reviews. Premium users get dedicated account managers.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-20 bg-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 fade-in">
+                <h2 class="text-4xl md:text-5xl font-bold mb-6">Contact & Support</h2>
+                <p class="text-xl text-gray-400">
+                    Get in touch with our team
+                </p>
+            </div>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 max-w-6xl mx-auto">
+                <div class="space-y-8">
+                    <div class="card-hover rounded-2xl p-6">
+                        <div class="flex items-center space-x-4">
+                            <div class="w-12 h-12 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
+                                <i class="fas fa-map-marker-alt text-white"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-semibold text-white mb-1">Office Address</h3>
+                                <p class="text-gray-300">FX STREET CODE<br>Office 1704, Burjuman Business Tower<br>Sheikh Khalifa Bin Zayed Street<br>Dubai, United Arab Emirates</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card-hover rounded-2xl p-6">
+                        <div class="flex items-center space-x-4">
+                            <div class="w-12 h-12 bg-gradient-to-r from-green-500 to-blue-600 rounded-full flex items-center justify-center">
+                                <i class="fas fa-envelope text-white"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-semibold text-white mb-1">Email Support</h3>
+                                <p class="text-gray-300">
+                                    Email :<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="4330222f263003253b303731262637202c27266d202c2e">support@fxstreetcode.com</a><br>
+                                    Sales: <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="4330222f263003253b303731262637202c27266d202c2e">sales@fxstreetcode.com</a><br>
+                                    Support: <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="770402070718050337110f040305121203141813125914181a">support@fxstreetcode.com</a><br>
+                                    Info: <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="f49d9a929bb4928c878086919180979b9091da979b99">info@fxstreetcode.com</a>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card-hover rounded-2xl p-6">
+                        <div class="flex items-center space-x-4">
+                            <div class="w-12 h-12 bg-gradient-to-r from-purple-500 to-pink-600 rounded-full flex items-center justify-center">
+                                <i class="fab fa-whatsapp text-white"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-semibold text-white mb-1">WhatsApp Support</h3>
+                                <p class="text-gray-300">+91 9922502488  <br>+91 9370920323 <br>Available 24/7 for instant support</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="space-y-1">
+                    <div class="card-hover rounded-2xl p-8">
+                    <h3 class="text-2xl font-bold text-white mb-6">Get Started Today</h3>
+                    <form id="contactForm" class="space-y-6">  
+                        <div>
+                            <label class="block text-gray-300 mb-2">Full Name</label>
+                            <input type="text" class="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white focus:border-purple-500 focus:outline-none" placeholder="Enter your full name" required>
+                        </div>
+                        <div>
+                            <label class="block text-gray-300 mb-2">Email Address</label>
+                            <input type="email" class="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white focus:border-purple-500 focus:outline-none" placeholder="Enter your email" required>
+                        </div>
+                        <div>
+                            <label class="block text-gray-300 mb-2">Phone Number</label>
+                            <input type="tel" class="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white focus:border-purple-500 focus:outline-none" placeholder="Enter your phone number" required>
+                        </div>
+                        <div>
+                        <label class="block text-gray-300 mb-2">Phone Number</label>
+                            <select  type="enquiryplan" class="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white focus:border-purple-500 focus:outline-none" placeholder="Select plan " required>
+                        <option>Basic Plan - $200 (3 Months)</option>
+                            <option>Premium Plan - $500 (1 Half Year)</option>
+                            <option>High Premium - $2000 (5 Years)</option>
+                        </select>
+                    </div>
+                        <div>
+                            <label class="block text-gray-300 mb-2">Message</label>
+                            <textarea rows="4" class="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white focus:border-purple-500 focus:outline-none" placeholder="Tell us about your trading goals" required></textarea>
+                        </div>
+                        <button type="submit" class="w-full btn-primary py-3 rounded-lg font-semibold">
+                            <i class="fas fa-paper-plane mr-2"></i>Send Message
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+                        <!--<div class="space-y-4">
+                            <div class="flex items-center">
+                                <i class="fas fa-map-marker-alt text-blue-400 mr-4"></i>
+                                <div>
+                                    <p class="font-semibold">Address</p>
+                                    <p class="text-gray-400">Office 1704, Burjuman Business Tower<br>Sheikh Khalifa Bin Zayed Street<br>Dubai, United Arab Emirates</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center">
+                                <i class="fas fa-envelope text-blue-400 mr-4"></i>
+                                <div>
+                                    <p class="font-semibold">Email Support</p>
+                                    <p class="text-gray-400">support@fxstreetcode.com</p>
+                                    <p class="text-gray-400">sales@fxstreetcode.com</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center">
+                                <i class="fab fa-whatsapp text-green-400 mr-4"></i>
+                                <div>
+                                    <p class="font-semibold">WhatsApp Support</p>
+                                    <p class="text-gray-400">24/7 Available</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>-->
+                    <!--<div class="bg-gray-900 p-6 rounded-2xl">
+                        <h4 class="text-xl font-bold mb-4">Book a Free Consultation</h4>
+                        <p class="text-gray-400 mb-4">Schedule a 30-minute call with our trading experts to discuss your goals and see our platform in action.</p>
+                        <button onclick="openCalendly()" class="w-full bg-gradient-to-r from-purple-600 to-pink-600 py-3 rounded-lg font-semibold hover:shadow-lg transition">
+                            Schedule Call
+                        </button>
+                    </div>-->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+        <footer class="bg-gray-900 py-12 border-t border-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-4 gap-8">
+                <div>
+                    <div class="flex items-center space-x-3 mb-4">
+                        <!-- Right side logo -->
+                    <div style="margin-left: auto;">
+                    <img src="photo.jpeg" alt="Logo" style="height: 50px; cursor: pointer;">
+                    </div>
+                        <div class="text-2xl font-bold gradient-text mb-2">FX STREET CODE</div>
+                    </div>
+                    <p class="text-gray-400 mb-4">Empowering traders with reliable, broker-agnostic algorithmic solutions.</p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center text-gray-400 hover:text-white hover:bg-purple-600 transition-all">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center text-gray-400 hover:text-white hover:bg-purple-600 transition-all">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center text-gray-400 hover:text-white hover:bg-purple-600 transition-all">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center text-gray-400 hover:text-white hover:bg-purple-600 transition-all">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Quick Links</h3>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="#home" class="hover:text-white transition">Home</a></li>
+                        <li><a href="#services" class="hover:text-white transition">Services</a></li>
+                        <li><a href="#pricing" class="hover:text-white transition">Pricing</a></li>
+                        <li><a href="#results" class="hover:text-white transition">Results</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Support</h3>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="#faq" class="hover:text-white transition">FAQ</a></li>
+                        <li><a href="#contact" class="hover:text-white transition">Contact</a></li>
+                        <li><a href="#" class="hover:text-white transition">Help Center</a></li>
+                        <li><a href="#" class="hover:text-white transition">Live Chat</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Legal</h3>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="#" class="hover:text-white transition">Terms of Service</a></li>
+                        <li><a href="#" class="hover:text-white transition">Privacy Policy</a></li>
+                        <li><a href="#" class="hover:text-white transition">Risk Disclaimer</a></li>
+                        <li><a href="#" class="hover:text-white transition">Refund Policy</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-gray-800 mt-8 pt-8 text-center">
+                <p class="text-gray-400">
+                    © 2024 FX STREET CODE. All rights reserved. | 
+                    <span class="text-red-400">Risk Warning:</span> Trading involves substantial risk of loss and is not suitable for all investors.
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- WhatsApp Float Button -->
+    <a href="#" onclick="openWhatsApp()" class="whatsapp-float">
+        <i class="fab fa-whatsapp mt-4"></i>
+        
+    </a>
+
+    <!--Enquiry Modal  -->  
+    <div id="enquiryModal" class="modal">
+        <div class="bg-gray-800 p-8 rounded-2xl max-w-md w-full mx-4">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-2xl font-bold">Start Your Trading Journey</h3>
+                <button onclick="closeEnquiryModal()" class="text-gray-400 hover:text-white">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <form id="enquiryForm">
+                
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium mb-2">Full Name *</label>
+                        <input type="text" id="enquiryName" required class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-500">
+                        <div id="nameError" class="text-red-400 text-sm mt-1 hidden">Please enter a valid name</div>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-2">Email Address *</label>
+                        <input type="email" id="enquiryEmail" required class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-500">
+                        <div id="emailError" class="text-red-400 text-sm mt-1 hidden">Please enter a valid email</div>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-2">Phone Number *</label>
+                        <input type="tel" id="enquiryPhone" required class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-500">
+                        <div id="phoneError" class="text-red-400 text-sm mt-1 hidden">Please enter a valid phone number</div>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-2">Preferred Plan</label>
+                        <select id="enquiryPlan" class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-500">
+                            <option>Basic Plan - $200 (3 Months)</option>
+                            <option>Premium Plan - $500 (1 Half Year)</option>
+                            <option>High Premium - $2000 (5 Years)</option>
+                        </select>
+                    </div>
+                </div>
+                <button type="submit" class="w-full bg-gradient-to-r from-blue-600 to-purple-600 py-3 rounded-lg font-semibold mt-6 hover:shadow-lg transition">
+                    Get Started
+                </button>
+            </form>
+        </div>
+    </div> 
+
+    <!-- Alert Modal -->
+    <div id="riskModal" class="modal">
+        <div class="bg-red-900 border border-golden-600 p-8 rounded-2xl max-w-2xl w-full mx-4">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-2xl font-bold text-red-200">Important Notice</h3>
+                <button onclick="closeRiskModal()" class="text-red-400 hover:text-red-200">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="text-red-200 space-y-4">
+                <p><strong>Important Risk Warning:</strong></p>
+                <ul class="list-disc list-inside space-y-2">
+                    <li>Fx Street Code does not guarantee any profits or prevent losses. We provide automated trading software and, in certain countries, signal services.
+                    All payments must be made exclusively to our official UAE company bank account, or via Stripe or Binance as detailed on our website. We do not accept payments to any accounts outside of our official UAE company bank account. No other payment methods, including broker-to-broker transfers, are accepted. Please ensure you use only the specified channels. If in case of any query call on +91 9370920323 and write us on - info@fxstreetcode.com.</li>
+                </ul>
+                <p class="text-sm">By proceeding, you acknowledge that you understand these risks and agree to our terms of service.</p>
+            </div>
+            <div class="flex space-x-4 mt-6">
+                <button onclick="acceptRisk()" class="flex-1 bg-green-600 py-3 rounded-lg font-semibold hover:bg-green-700 transition">
+                    I Understand & Accept
+                </button>
+                <button onclick="closeRiskModal()" class="flex-1 bg-gray-600 py-3 rounded-lg font-semibold hover:bg-gray-700 transition">
+                    Cancel
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Popup Modal--> 
+    <div id="popupOverlay" class="popup-overlay">
+        <div class="popup-content">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-2xl font-bold text-white">Get Started Today!</h3>
+                <button onclick="hidePopup()" class="text-gray-400 hover:text-white text-2xl">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <p class="text-gray-300 mb-6">Join thousands of successful traders using our automated algorithms. Fill out the form below and our team will contact you within 15 minutes!</p>
+            
+            <form id="EnquiryModal" class="space-y-4">
+                <div>
+                    <input type="text" placeholder="Full Name" class="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white focus:border-purple-500 focus:outline-none" required>
+                </div>
+                <div>
+                    <input type="email" placeholder="Email Address" class="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white focus:border-purple-500 focus:outline-none" required>
+                </div>
+                <div>
+                    <input type="tel" placeholder="WhatsApp Number" class="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white focus:border-purple-500 focus:outline-none" required>
+                </div>
+                <div>
+                    <select class="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white focus:border-purple-500 focus:outline-none" required>
+                        <option value="">Select Preferred Plan</option>
+                        <option value="basic">Basic Plan - $200</option>
+                        <option value="premium">Premium Plan - $500</option>
+                        <option value="high-premium">High Premium - $2000</option>
+                    </select>
+                </div>
+                <div>
+                    <input type="number" placeholder="Investment Capital (USD)" class="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white focus:border-purple-500 focus:outline-none" required>
+                </div>
+                <button type="submit" class="w-full btn-primary py-3 rounded-lg font-semibold">
+                    <i class="fas fa-rocket mr-2"></i>Start Free Demo Now!
+                </button>
+            </form>
+            
+            <div class="flex justify-center space-x-4 mt-6">
+                <a href="https://wa.me/+971501234567" class="bg-green-600 hover:bg-green-700 px-6 py-2 rounded-lg text-white font-semibold transition-all">
+                    <i class="fab fa-whatsapp mr-2"></i>WhatsApp Us
+                </a>
+            </div>
+        </div>
+    </div> 
+
+    <script>
+        // Performance Chart
+        const ctx = document.getElementById('performanceChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                datasets: [{
+                    label: 'Portfolio Value ($)',
+                    data: [5000, 6500, 8200, 7800, 9500, 12500],
+                    borderColor: '#667eea',
+                    backgroundColor: 'rgba(102, 126, 234, 0.1)',
+                    fill: true,
+                    tension: 0.4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        labels: {
+                            color: '#ffffff'
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        ticks: {
+                            color: '#ffffff'
+                        },
+                        grid: {
+                            color: 'rgba(255, 255, 255, 0.1)'
+                        }
+                    },
+                    y: {
+                        ticks: {
+                            color: '#ffffff',
+                            callback: function(value) {
+                                return '$' + value.toLocaleString();
+                            }
+                        },
+                        grid: {
+                            color: 'rgba(255, 255, 255, 0.1)'
+                        }
+                    }
+                }
+            }
+        });
+
+        // Mobile Menu Toggle
+        function toggleMenu() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        }
+
+        // FAQ Toggle
+        function toggleFaq(id) {
+            const content = document.getElementById(`faq-content-${id}`);
+            const icon = document.getElementById(`faq-icon-${id}`);
+            
+            if (content.classList.contains('hidden')) {
+                content.classList.remove('hidden');
+                icon.style.transform = 'rotate(180deg)';
+            } else {
+                content.classList.add('hidden');
+                icon.style.transform = 'rotate(0deg)';
+            }
+        }
+
+        // Modal Functions
+        function openEnquiryModal() {
+            document.getElementById('enquiryModal').classList.add('show');
+        }
+
+        function closeEnquiryModal() {
+            document.getElementById('enquiryModal').classList.remove('show');
+        }
+
+        function openRiskModal() {
+            document.getElementById('riskModal').classList.add('show');
+        }
+
+        function closeRiskModal() {
+            document.getElementById('riskModal').classList.remove('show');
+        }
+
+        function acceptRisk() {
+            closeRiskModal();
+            alert('Thank you for your understanding. Our team will contact you shortly!');
+        }
+
+        // WhatsApp Integration
+        function openWhatsApp() {
+            const message = "Hi! I'm interested in FX STREET CODE algo trading software. Can you help me get started?";
+            const phoneNumber = "9370920323"; // Replace with actual WhatsApp number
+            window.open(`https://wa.me/${9370920323}?text=${encodeURIComponent(message)}`, '_blank');
+        }
+
+        // Calendly Integration
+        function openCalendly() {
+            // Replace with actual Calendly link
+            window.open('https://calendly.com/fxstreetcode/consultation', '_blank');
+        }
+
+        // Plan Selection
+        function selectPlan(plan) {
+            document.getElementById('enquiryPlan').value = plan === 'basic' ? 'Basic Plan - $150 (2 Months)' : 
+                                                           plan === 'premium' ? 'Premium Plan - $400 (1 Year)' : 
+                                                           'High Premium - $2000 (Lifetime)';
+            openEnquiryModal();
+        }
+
+        // Form Validation
+        function validateEmail(email) {
+            const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return re.test(email);
+        }
+
+        function validatePhone(phone) {
+            const re = /^[\+]?[1-9][\d]{0,15}$/;
+            return re.test(phone.replace(/\s/g, ''));
+        }
+
+        function validateName(name) {
+            return name.trim().length >= 2;
+        }
+
+        // Enquiry Form Submission
+        document.getElementById('enquiryForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const name = document.getElementById('enquiryName').value;
+            const email = document.getElementById('enquiryEmail').value;
+            const phone = document.getElementById('enquiryPhone').value;
+            
+            // Reset errors
+            document.getElementById('nameError').classList.add('hidden');
+            document.getElementById('emailError').classList.add('hidden');
+            document.getElementById('phoneError').classList.add('hidden');
+            
+            let isValid = true;
+            
+            if (!validateName(name)) {
+                document.getElementById('nameError').classList.remove('hidden');
+                isValid = false;
+            }
+            
+            if (!validateEmail(email)) {
+                document.getElementById('emailError').classList.remove('hidden');
+                isValid = false;
+            }
+            
+            if (!validatePhone(phone)) {
+                document.getElementById('phoneError').classList.remove('hidden');
+                isValid = false;
+            }
+            
+            if (isValid) {
+                closeEnquiryModal();
+                setTimeout(() => {
+                    openRiskModal();
+                }, 500);
+            }
+        });
+
+        // Contact Form Submission
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(e.target);
+            const data = Object.fromEntries(formData.entries());
+            
+            // Simulate form submission
+            alert('Thank you for your message! We will get back to you within 24 hours.');
+            e.target.reset();
+        });
+
+        // Smooth Scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Intersection Observer for Animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Apply animation to elements
+        document.querySelectorAll('.fade-in').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(30px)';
+            el.style.transition = 'all 0.8s ease';
+            observer.observe(el);
+        });
+
+        // Auto-show enquiry popup after 30 seconds
+        setTimeout(() => {
+            if (!sessionStorage.getItem('enquiryShown')) {
+                openEnquiryModal();
+                sessionStorage.setItem('enquiryShown', 'true');
+            }
+        }, 30000);
+
+        // Close modals when clicking outside
+        window.onclick = function(event) {
+            const enquiryModal = document.getElementById('enquiryModal');
+            const riskModal = document.getElementById('riskModal');
+            
+            if (event.target === enquiryModal) {
+                closeEnquiryModal();
+            }
+            if (event.target === riskModal) {
+                closeRiskModal();
+            }
+        }
+    </script>
+</body>
+</html>
+
+    
